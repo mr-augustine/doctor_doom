@@ -3,7 +3,7 @@
 #include "doom.h"
 
 #define MAINLOOP_PERIOD_TICKS   6249
-#define MISSION_TIMEOUT         320
+#define MISSION_TIMEOUT         3200
 
 statevars_t statevars;
 uint32_t iterations;
@@ -56,18 +56,12 @@ void loop() {
     statevars.status |= STATUS_SYS_TIMER_OVERFLOW;
   }
 
+  // Draw the PWM signals one by one before continuing the loop
+  mobility_send_steering_pwm(1200);
+  mobility_send_throttle_pwm(SPEED_FWD_CREEP);
+
   // Record the data from the previous iteration
   write_data();
-
-  // Set the control values from the previous iteration
-  // Rationale: Based on initial testing, I suspect the output compare register
-  // values that shape the PWM signals isn't being set early enough because
-  // the floating-point calculations in update_nav_control_values() takes a
-  // while. So I'll carryover the PWM values from the previous iteration and
-  // set them at the start of the new iteration.
-  mobility_start_control_output();
-  mobility_steer(statevars.control_steering_pwm);
-  mobility_drive_fwd(Speed_Creep);
 
   // Reset statevars and timer overflow flag
   statevars.status = 0;
@@ -82,9 +76,9 @@ void loop() {
   iterations++;
 
   // If the button switched to the OFF position, then stop the mission
-  //if (!button_is_pressed()) {
+  if (!button_is_pressed()) {
   // Instead, stop the robot after a certain number of seconds
-  if (iterations > MISSION_TIMEOUT) {
+  //if (iterations > MISSION_TIMEOUT) {
     Serial.println("Finished collecting data!");
     sdcard_finish();
 
@@ -157,46 +151,46 @@ uint8_t init_all_subsystems(void) {
   Serial.begin(115200);
 
   if (!button_init()) {
-    Serial.print("LED button couldn't be initialized");
+    Serial.println("LED button couldn't be initialized");
     return 0;
   } else {
-    Serial.print("LED button is ready!");
+    Serial.println("LED button is ready!");
     led_turn_off();
   }
 
   if (!cmps10_init()) {
-    Serial.print("Compass couldn't be initialized");
+    Serial.println("Compass couldn't be initialized");
     return 0;
   } else {
-    Serial.print("Compass is ready!");
+    Serial.println("Compass is ready!");
   }
 
   if (!gps_init()) {
-    Serial.print("GPS sensor couldn't be initialized");
+    Serial.println("GPS sensor couldn't be initialized");
     return 0;
   } else {
-    Serial.print("GPS sensor is ready!");
+    Serial.println("GPS sensor is ready!");
   }
 
   if (!odometer_init()) {
-    Serial.print("Odometer couldn't be initialized");
+    Serial.println("Odometer couldn't be initialized");
     return 0;
   } else {
-    Serial.print("Odometer is ready!");
+    Serial.println("Odometer is ready!");
   }
 
   if (!mobility_init()) {
-    Serial.print("Mobility couldn't be initialized");
+    Serial.println("Mobility couldn't be initialized");
     return 0;
   } else {
-    Serial.print("Mobility is ready!");
+    Serial.println("Mobility is ready!");
   }
 
   if (!sdcard_init(&statevars, sizeof(statevars))) {
-    Serial.print("SD card couldn't be initialized");
+    Serial.println("SD card couldn't be initialized");
     return 0;
   } else {
-    Serial.print("SD card is ready!");
+    Serial.println("SD card is ready!");
   }
 
   return 1;

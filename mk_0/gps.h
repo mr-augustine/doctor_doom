@@ -182,25 +182,25 @@ void gps_update(void) {
 
 /* Resets all GPS-related statevars to zero. */
 static void initialize_gps_statevars() {
-  statevars.gps_latitude = 0.0;
-  statevars.gps_longitude = 0.0;
+  // statevars.gps_latitude = 0.0;
+  // statevars.gps_longitude = 0.0;
   statevars.gps_lat_deg = 0;
   statevars.gps_lat_ddeg = 0.0;
   statevars.gps_long_deg = 0;
   statevars.gps_long_ddeg = 0.0;
   statevars.gps_hdop = 0.0;
-  statevars.gps_pdop = 0.0;
-  statevars.gps_vdop = 0.0;
-  statevars.gps_msl_altitude_m = 0.0;
-  statevars.gps_true_hdg_deg = 0.0;
+  // statevars.gps_pdop = 0.0;
+  // statevars.gps_vdop = 0.0;
+  // statevars.gps_msl_altitude_m = 0.0;
+  // statevars.gps_true_hdg_deg = 0.0;
   statevars.gps_ground_course_deg = 0.0;
-  statevars.gps_speed_kmph = 0.0;
+  // statevars.gps_speed_kmph = 0.0;
   statevars.gps_ground_speed_kt = 0.0;
-  statevars.gps_speed_kt = 0.0;
-  statevars.gps_hours = 0;
-  statevars.gps_minutes = 0;
-  statevars.gps_seconds = 0.0;
-  memset(statevars.gps_date, 0, GPS_DATE_WIDTH);
+  // statevars.gps_speed_kt = 0.0;
+  // statevars.gps_hours = 0;
+  // statevars.gps_minutes = 0;
+  // statevars.gps_seconds = 0.0;
+  // memset(statevars.gps_date, 0, GPS_DATE_WIDTH);
   statevars.gps_satcount = 0;
 
   return;
@@ -224,16 +224,16 @@ static uint8_t parse_gpgga(char * s) {
 
   // UTC Time - hhmmss.sss
   s = strtok(NULL, ",");
-  strncpy(field_buf, s, 2);
-  statevars.gps_hours = atoi(field_buf);
+  // strncpy(field_buf, s, 2);
+  // statevars.gps_hours = atoi(field_buf);
 
-  memset(field_buf, '\0', GPS_FIELD_BUFF_SZ);
-  strncpy(field_buf, s+2, 2);
-  statevars.gps_minutes = atoi(field_buf);
+  // memset(field_buf, '\0', GPS_FIELD_BUFF_SZ);
+  // strncpy(field_buf, s+2, 2);
+  // statevars.gps_minutes = atoi(field_buf);
 
-  memset(field_buf, '\0', GPS_FIELD_BUFF_SZ);
-  strncpy(field_buf, s+4, 6);
-  statevars.gps_seconds = atof(field_buf);
+  // memset(field_buf, '\0', GPS_FIELD_BUFF_SZ);
+  // strncpy(field_buf, s+4, 6);
+  // statevars.gps_seconds = atof(field_buf);
 
   // Latitude - ddmm.mmmm
   s = strtok(NULL, ",");
@@ -295,8 +295,8 @@ static uint8_t parse_gpgga(char * s) {
     long_decimal_degrees = -long_decimal_degrees;
   }
 
-  statevars.gps_latitude = latitude;
-  statevars.gps_longitude = longitude;
+  // statevars.gps_latitude = latitude;
+  // statevars.gps_longitude = longitude;
   statevars.gps_lat_deg = lat_degrees;
   statevars.gps_lat_ddeg = lat_decimal_degrees;
   statevars.gps_long_deg = long_degrees;
@@ -329,7 +329,7 @@ static uint8_t parse_gpgga(char * s) {
 
   // Mean Sea Level Altitude
   s = strtok(NULL, ",");
-  statevars.gps_msl_altitude_m = atof(s);
+  // statevars.gps_msl_altitude_m = atof(s);
 
   return 0;
 }
@@ -366,14 +366,14 @@ static uint8_t parse_gpgsa(char * s) {
   if (i == 12) {
     s = strtok(NULL, ",");
   }
-  statevars.gps_pdop = atof(s);
+  // statevars.gps_pdop = atof(s);
 
   // HDOP - ignore (we get this from $GPGGA)
   s = strtok(NULL, ",");
 
   // Vertical Dilution of Precision (VDOP)
   s = strtok(NULL, ",");
-  statevars.gps_vdop = atof(s);
+  // statevars.gps_vdop = atof(s);
 
   return 0;
 }
@@ -417,7 +417,7 @@ static uint8_t parse_gprmc(char * s) {
 
   // Date - ddmmyy
   s = strtok(NULL, ",");
-  strncpy(statevars.gps_date, s, GPS_FIELD_BUFF_SZ);
+  // strncpy(statevars.gps_date, s, GPS_FIELD_BUFF_SZ);
 
   // Ignoring Magnetic variation - ignoring; this won't exist because we
   // haven't configured the GPS sensor to produce this value
@@ -449,7 +449,7 @@ static uint8_t parse_gpvtg(char * s) {
     statevars.status |= STATUS_GPS_UNEXPECT_VAL;
     return 1;
   }
-  statevars.gps_true_hdg_deg = true_hdg_deg;
+  // statevars.gps_true_hdg_deg = true_hdg_deg;
 
   // Course - Magnetic heading - won't exist for us since we haven't configured
   // the gps sensor to provide this. This should point to the next field ('M').
@@ -472,7 +472,7 @@ static uint8_t parse_gpvtg(char * s) {
     statevars.status |= STATUS_GPS_UNEXPECT_VAL;
     return 1;
   }
-  statevars.gps_speed_kt = speed_knots;
+  // statevars.gps_speed_kt = speed_knots;
 
   // Horizontal speed in kmph
   // only write the speed value to statevars if the reference field that follows
@@ -486,7 +486,7 @@ static uint8_t parse_gpvtg(char * s) {
     statevars.status |= STATUS_GPS_UNEXPECT_VAL;
     return 1;
   }
-  statevars.gps_speed_kmph = speed_kmph;
+  // statevars.gps_speed_kmph = speed_kmph;
 
   // Ignoring Mode field
 
@@ -503,7 +503,7 @@ static void parse_gps_sentence(char * sentence) {
     //Serial.println(sentence);
     // Copy the GPGGA sentence to statevars regardless of checksum; and
     // include any null chars as well (versus strcpy)
-    memcpy(statevars.gps_sentence0, sentence, GPS_SENTENCE_BUFF_SZ);
+    // memcpy(statevars.gps_sentence0, sentence, GPS_SENTENCE_BUFF_SZ);
 
     // Parse the sentence only if the checksum is valid
     if (validate_checksum(sentence) == 1) {
@@ -516,10 +516,10 @@ static void parse_gps_sentence(char * sentence) {
     //Serial.println("GPGSA found!\r\n");
     //Serial.println(sentence);
 
-    memcpy(statevars.gps_sentence1, sentence, GPS_SENTENCE_BUFF_SZ);
+    // memcpy(statevars.gps_sentence1, sentence, GPS_SENTENCE_BUFF_SZ);
 
     if (validate_checksum(sentence) == 1) {
-      parse_gpgsa(sentence);
+      // parse_gpgsa(sentence);
       statevars.status |= STATUS_GPS_GPGSA_RCVD;
     }
   } else if (strncmp(sentence, GPRMC_START, START_LENGTH) == 0) {
@@ -527,7 +527,7 @@ static void parse_gps_sentence(char * sentence) {
     //Serial.println("GPRMC found!\r\n");
     //Serial.println(sentence);
 
-    memcpy(statevars.gps_sentence2, sentence, GPS_SENTENCE_BUFF_SZ);
+    // memcpy(statevars.gps_sentence2, sentence, GPS_SENTENCE_BUFF_SZ);
 
     if (validate_checksum(sentence) == 1) {
       parse_gprmc(sentence);
@@ -538,10 +538,10 @@ static void parse_gps_sentence(char * sentence) {
     //Serial.println("GPVTG found!\r\n");
     //Serial.println(sentence);
 
-    memcpy(statevars.gps_sentence3, sentence, GPS_SENTENCE_BUFF_SZ);
+    // memcpy(statevars.gps_sentence3, sentence, GPS_SENTENCE_BUFF_SZ);
 
     if (validate_checksum(sentence) == 1) {
-      parse_gpvtg(sentence);
+      // parse_gpvtg(sentence);
       statevars.status |= STATUS_GPS_GPVTG_RCVD;
     }
   } else {

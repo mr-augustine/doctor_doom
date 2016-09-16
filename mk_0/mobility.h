@@ -54,27 +54,31 @@ static uint8_t current_hold_iterations;
 
 Drive_Gear current_gear;
 
+// TODO mr-augustine The ISRs aren't being used anymore. Instead, we're manually
+// shaping the PWM signal. Delete these.
 // These Interrupt Service Routines are used to terminate the PWM pulses
 // for the steering servo and drive motor. The PWM pulses are terminated
 // when the timer reaches the values associated with the desired pulse
 // durations. Those values are set in the output compare registers.
-ISR(STEERING_ISR_VECT) {
-  STEERING_PORT &= ~(1 << STEERING_PIN);
-}
-
-ISR(THROTTLE_ISR_VECT) {
-  THROTTLE_PORT &= ~(1 << THROTTLE_PIN);
-}
+// ISR(STEERING_ISR_VECT) {
+//   STEERING_PORT &= ~(1 << STEERING_PIN);
+// }
+// 
+// ISR(THROTTLE_ISR_VECT) {
+//   THROTTLE_PORT &= ~(1 << THROTTLE_PIN);
+// }
 
 
 uint8_t mobility_init(void);
-void mobility_start_control_output(void);
+// void mobility_start_control_output(void);
 void mobility_drive_fwd(Drive_Speed speed);
 void mobility_drive_rev(Drive_Speed speed);
 void mobility_hardstop(void);
 void mobility_blocking_stop(void);
 void mobility_stop(void);
 void mobility_steer(uint16_t steer_pwm);
+void mobility_send_throttle_pwm(uint16_t pulse_width_us);
+void mobility_send_steering_pwm(uint16_t pulse_width_us);
 
 static void tnp_bypass(uint16_t iterations) {
   uint16_t pulse_on_duration_us = 1500;
@@ -104,6 +108,47 @@ static void tnp_bypass(uint16_t iterations) {
   return;
 }
 
+void mobility_send_throttle_pwm(uint16_t pulse_width_us) {
+  uint8_t iterations = 100;
+  uint16_t width = pulse_width_us / iterations;
+
+  // Ensure the drive pin is initially low
+  THROTTLE_PORT &= ~(1 << THROTTLE_PIN);
+
+  // Start the pulse
+  THROTTLE_PORT |= (1 << THROTTLE_PIN);
+
+  // Hold the pulse
+  while (width--) {
+    _delay_us(iterations);
+  }
+
+  // End the pulse
+  THROTTLE_PORT &= ~(1 << THROTTLE_PIN);
+
+  return;
+}
+
+void mobility_send_steering_pwm(uint16_t pulse_width_us) {
+  uint8_t iterations = 100;
+  uint16_t width = pulse_width_us / iterations;
+
+  // Ensure the drive pin is initially low
+  STEERING_PORT &= ~(1 << STEERING_PIN);
+
+  // Start the pulse
+  STEERING_PORT |= (1 << STEERING_PIN);
+
+  while (width--) {
+    _delay_us(iterations);
+  }
+
+  // End the pulse
+  STEERING_PORT &= ~(1 << STEERING_PIN);
+
+  return;
+}
+
 uint8_t mobility_init(void) {
   current_gear = Gear_Neutral;
 
@@ -120,17 +165,6 @@ uint8_t mobility_init(void) {
   mobility_steer(TURN_NEUTRAL);
 
   return 1;
-}
-
-void mobility_start_control_output(void) {
-  THROTTLE_PORT |= (1 << THROTTLE_PIN);
-  STEERING_PORT |= (1 << STEERING_PIN);
-
-  // TODO Really, you should only set the output compare enable bits here.
-  // (bits 1 and 2). Leave bit 0 alone.
-  TIMSK1 = 0b00000111;  // Enable output compare timers to trigger
-
-  return;
 }
 
 void mobility_drive_fwd(Drive_Speed speed) {
@@ -169,9 +203,10 @@ void mobility_drive_fwd(Drive_Speed speed) {
     // Update the gear to forward in case we entered this function while neutral
     current_gear = Gear_Forward;
 
-    THROTTLE_COMPARE_REG = mobility_throttle_us >> 2;
+    // THROTTLE_COMPARE_REG = mobility_throttle_us >> 2;
+    mobility_send_throttle_pwm(mobility_throttle_us);
 
-    statevars.mobility_motor_pwm = THROTTLE_COMPARE_REG;
+    statevars.mobility_motor_pwm = mobility_throttle_us;
   }
 
   // NOTE: We're not handling the case where the robot is driving in reverse.
@@ -257,9 +292,10 @@ void mobility_drive_rev(Drive_Speed speed) {
     // Else if you're Driving_Pre_Reverse, continue decreasing PWM until you hit stop, then wait
   }
 
-  THROTTLE_COMPARE_REG = mobility_throttle_us >> 2;
+  // THROTTLE_COMPARE_REG = mobility_throttle_us >> 2;
+  mobility_send_throttle_pwm(mobility_throttle_us);
 
-  statevars.mobility_motor_pwm = THROTTLE_COMPARE_REG;
+  statevars.mobility_motor_pwm = mobility_throttle_us;
 
   return;
 }
@@ -281,9 +317,10 @@ void mobility_blocking_stop(void) {
 void mobility_hardstop(void) {
   mobility_throttle_us = SPEED_NEUTRAL;
 
-  THROTTLE_COMPARE_REG = SPEED_NEUTRAL >> 2;
+  // THROTTLE_COMPARE_REG = SPEED_NEUTRAL >> 2;
+  mobility_send_throttle_pwm(mobility_throttle_us);
 
-  statevars.mobility_motor_pwm = THROTTLE_COMPARE_REG;
+  statevars.mobility_motor_pwm = mobility_throttle_us;
 
   return;
 }
@@ -327,9 +364,10 @@ void mobility_stop(void) {
       ;
   }
 
-  THROTTLE_COMPARE_REG = mobility_throttle_us >> 2;
+  // THROTTLE_COMPARE_REG = mobility_throttle_us >> 2;
+  mobility_send_throttle_pwm(mobility_throttle_us);
 
-  statevars.mobility_motor_pwm = THROTTLE_COMPARE_REG;
+  statevars.mobility_motor_pwm = mobility_throttle_us;
 
   return;
 }
@@ -349,9 +387,10 @@ void mobility_steer(uint16_t steer_pwm) {
 
   mobility_steer_us = steer_pwm;
 
-  STEERING_COMPARE_REG = mobility_steer_us >> 2;
+  // STEERING_COMPARE_REG = mobility_steer_us >> 2;
+  mobility_send_steering_pwm(mobility_steer_us);
 
-  statevars.mobility_steering_pwm = STEERING_COMPARE_REG;
+  statevars.mobility_steering_pwm = mobility_steer_us;
 
   return;
 }

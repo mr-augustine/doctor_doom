@@ -254,7 +254,7 @@ static void get_next_waypoint(void) {
     // Ensure we aren't getting the default lat/long
     //TODO We're assuming that the waypoint and current position don't cross
     //a whole degree boundary!!! Fix this!
-    if (statevars.gps_latitude != 0.0 && statevars.gps_longitude != 0.0) {
+    if (statevars.gps_lat_deg != 0.0 && statevars.gps_long_deg != 0.0) {
       waypoint_lat = statevars.gps_lat_ddeg;
       waypoint_long = statevars.gps_long_ddeg;
 
