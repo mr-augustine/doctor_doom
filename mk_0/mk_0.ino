@@ -3,7 +3,7 @@
 #include "doom.h"
 
 #define MAINLOOP_PERIOD_TICKS   6249
-#define MISSION_TIMEOUT         3200
+#define MISSION_TIMEOUT         200
 
 statevars_t statevars;
 uint32_t iterations;
@@ -57,7 +57,7 @@ void loop() {
   }
 
   // Draw the PWM signals one by one before continuing the loop
-  mobility_send_steering_pwm(1200);
+  mobility_send_steering_pwm(statevars.control_steering_pwm);
   mobility_send_throttle_pwm(SPEED_FWD_CREEP);
 
   // Record the data from the previous iteration
@@ -76,9 +76,9 @@ void loop() {
   iterations++;
 
   // If the button switched to the OFF position, then stop the mission
-  if (!button_is_pressed()) {
+  //if (!button_is_pressed()) {
   // Instead, stop the robot after a certain number of seconds
-  //if (iterations > MISSION_TIMEOUT) {
+  if (iterations > MISSION_TIMEOUT) {
     Serial.println("Finished collecting data!");
     sdcard_finish();
 
