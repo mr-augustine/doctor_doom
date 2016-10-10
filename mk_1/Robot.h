@@ -9,9 +9,11 @@
 #ifndef _ROBOT_H_
 #define _ROBOT_H_
 
+#include "Compass.h"
 #include "Gps.h"
 #include "LedButton.h"
 #include "Mobility.h"
+#include "Odometer.h"
 #include "Statevars.h"
 
 #define ROBOT_NAME                  ("doom")
@@ -41,10 +43,10 @@
 class Robot {
 private:
   Statevars * vars;
-  //Compass * compass;
+  Compass * compass;
   Gps * gps;
   LedButton * button;
-  //Odometer * odometer;
+  Odometer * odometer;
 
   float current_lat;
   float current_long;
@@ -82,7 +84,7 @@ private:
   void update_xtrack_error_sum(void);
 
 public:
-  Robot(const Statevars * s, const Gps * g, const LedButton * l);
+  Robot(const Statevars * s, const Compass * c, const Gps * g, const LedButton * l, const Odometer * o);
   void update_all_inputs(void);
   void update_nav_control_values(void);
 };

@@ -7,12 +7,12 @@
 
 #include "Robot.h"
 
-Robot::Robot(const Statevars * s, const Gps * g, const LedButton * l) {
+Robot::Robot(const Statevars * s, const Compass * c, const Gps * g, const LedButton * l, const Odometer * o) {
   vars = s;
-  //compass = c;
+  compass = c;
   gps = g;
   button = l;
-  //odometer = o;
+  odometer = o;
 
   current_lat = 0.0;
   current_long = 0.0;
@@ -38,6 +38,9 @@ Robot::Robot(const Statevars * s, const Gps * g, const LedButton * l) {
 
 void Robot::update_all_inputs(void) {
   button->update();
+  compass->update();
+  gps->update();
+  odometer->update();
 
   update_all_nav();
 
