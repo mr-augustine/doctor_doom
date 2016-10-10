@@ -38,6 +38,8 @@ typedef struct {
 
 class Gps {
 private:
+  Statevars * vars;
+
   uint8_t hexchar_to_dec(char c);
   void initialize_gps_statevars();
   uint8_t parse_gpgga(char * s);
@@ -48,7 +50,7 @@ private:
   uint8_t validate_checksum(char * s);
 
 public:
-  Gps(Statevars * statevars);
+  Gps(const Statevars * s);
   void initialize(void);
   int8_t verify_init(void);
   void update(void);
