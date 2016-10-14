@@ -12,6 +12,7 @@
 #include "Compass.h"
 #include "Gps.h"
 #include "LedButton.h"
+#include "Logger.h"
 #include "Mobility.h"
 #include "Odometer.h"
 #include "Statevars.h"

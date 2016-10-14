@@ -78,6 +78,8 @@ ISR (USART2_RX_vect) {
 
 Gps::Gps(const Statevars * s) {
   vars = s;
+
+  initialize();
 }
 
 void Gps::initialize(void) {
@@ -87,6 +89,7 @@ void Gps::initialize(void) {
   // Unset the flags, double speed, and comm mode bits
   //UCSR0A = 0;
 
+  // TODO Consider defining these registers in Pins.h
   // Enable receive interrupt and receiving
   UCSR2B = 0;
   UCSR2B = (1 << RXCIE2) | (1 << RXEN2);
@@ -106,12 +109,12 @@ void Gps::initialize(void) {
 
 int8_t Gps::verify_init(void) {
   // Verify receive interrupt and receiving are enabled
-  if ( UCSR2B != (1 << RXCIE2) | (1 << RXEN2) ) {
+  if ( UCSR2B != ((1 << RXCIE2) | (1 << RXEN2)) ) {
     return 0;
   }
 
   // Verify that asynchronous USART, no parity, 1 stop bid
-  if ( UCSR2C != (1 << UCSZ11) | (1 << UCSZ10) ) {
+  if ( UCSR2C != ((1 << UCSZ11) | (1 << UCSZ10)) ) {
     return -1;
   }
 
@@ -141,8 +144,7 @@ void Gps::update(void) {
     gps_unexpected_start = 0;
   }
 
-  uint8_t i;
-  for (i = 0; i < NUM_GPS_SENTENCE_BUFFS; i++) {
+  for (uint8_t i = 0; i < NUM_GPS_SENTENCE_BUFFS; i++) {
     if (gps_buffers[i].ready == 1) {
       char * sentence_ptr = gps_buffers[i].sentence;
 

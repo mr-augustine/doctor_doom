@@ -5,8 +5,8 @@
  */
 #include "Mobility.h"
 
-Mobility::Mobility(const Statevars * statevars) {
-  vars = statevars;
+Mobility::Mobility(const Statevars * s) {
+  vars = s;
 
   throttle_us = THROT_NEUTRAL;
   steering_us = STEER_NEUTRAL;

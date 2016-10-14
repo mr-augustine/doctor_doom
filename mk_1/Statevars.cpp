@@ -7,9 +7,17 @@
 
 #include <string.h>
 
-void Statevars::reset(void) {
+Statevars::Statevars() {
+  initialize();
+}
+
+void Statevars::initialize(void) {
   memset(this, 0, sizeof(Statevars));
 
-  set_prefix(0xDADAFEED);
-  set_suffix(0xCAFEBABE);
+  set_prefix(DEFAULT_PREFIX);
+  set_suffix(DEFAULT_SUFFIX);
+}
+
+int8_t Statevars::verify_init(void) {
+  return (prefix == DEFAULT_PREFIX && suffix == DEFAULT_SUFFIX);
 }

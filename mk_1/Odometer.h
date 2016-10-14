@@ -25,8 +25,7 @@ enum WheelDirection {
 class Odometer {
 private:
   Statevars * vars;
-
-
+  
   void initialize_odometer_statevars(void);
 
 public:
@@ -39,7 +38,6 @@ public:
   uint32_t get_rev_count(void);
   uint32_t get_tick_time(void);
   void update(void);
-
 };
 
 #endif // #ifndef _ODOMETER_H_

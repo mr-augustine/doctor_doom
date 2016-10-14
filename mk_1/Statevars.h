@@ -12,6 +12,8 @@
 
 #include <stdint.h>
 
+#define DEFAULT_PREFIX        0xDADAFEED
+#define DEFAULT_SUFFIX        0xCAFEBABE
 #define GPS_SENTENCE_LENGTH   84
 #define GPS_DATE_WIDTH        8
 
@@ -30,6 +32,7 @@
 #define STATUS_MAIN_LOOP_LATE       (1 << 12)
 #define STATUS_GPS_FIX_AVAIL        (1 << 13)
 #define STATUS_NAV_POSITION_KNOWN   (1 << 14)
+#define STATUS_COMPASS_ERROR        (1 << 15)
 
 class Statevars {
 private:
@@ -70,8 +73,9 @@ private:
   uint32_t  suffix;
 
 public:
-  void reset();
-
+  Statevars(void);
+  void initialize(void);
+  int8_t verify_init(void);
   float get_control_heading_desired(void) { return control_heading_desired; }
   void set_control_heading_desired(float chd) { control_heading_desired = chd; }
   float get_control_steering_pwm(void) { return control_steering_pwm; }
@@ -142,7 +146,6 @@ public:
   void set_status(uint32_t s) { status = s; }
   uint32_t get_suffix(void) { return suffix; }
   void set_suffix(uint32_t s) { suffix = s; }
-
 };
 
 #endif

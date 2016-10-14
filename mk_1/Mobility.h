@@ -70,13 +70,13 @@ public:
   const uint32_t ticks_per_period = PRESCALED_TICKS_PER_SEC / (MILLISEC_PER_SEC / PWM_PERIOD_MS);
   const uint32_t microsec_per_period = MICROSEC_PER_MILLISEC * PWM_PERIOD_MS;
 
-  Mobility(const Statevars * statevars);
+  Mobility(const Statevars * s);
   void initialize(void);
+  int8_t verify_init(void);
   void drive_fwd(DriveSpeed speed);
   void drive_rev(DriveSpeed speed);
   void steer(uint16_t steer_pwm);
   void stop(void);
-  int8_t verify_init(void);
 };
 
 #endif

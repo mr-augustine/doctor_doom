@@ -9,6 +9,7 @@
 #define _COMPASS_H_
 
 #include <avr/interrupt.h>
+#include <HardwareSerial.h>
 #include "Statevars.h"
 #include "twi.h"
 
@@ -27,6 +28,7 @@ enum CompassRegister {
 class Compass {
 private:
   Statevars * vars;
+  uint8_t enabled;
 
   void begin_new_reading(void);
 
