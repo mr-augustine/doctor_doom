@@ -41,7 +41,6 @@ private:
   Statevars * vars;
 
   uint8_t hexchar_to_dec(char c);
-  void initialize(void);
   void initialize_gps_statevars();
   uint8_t parse_gpgga(char * s);
   uint8_t parse_gpgsa(char * s);
@@ -52,6 +51,7 @@ private:
 
 public:
   Gps(const Statevars * s);
+  void initialize(void);
   int8_t verify_init(void);
   void update(void);
 };

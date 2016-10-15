@@ -7,10 +7,6 @@
 
 #include <string.h>
 
-Statevars::Statevars() {
-  initialize();
-}
-
 void Statevars::initialize(void) {
   memset(this, 0, sizeof(Statevars));
 

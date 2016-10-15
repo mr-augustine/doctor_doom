@@ -26,11 +26,7 @@ void Logger::initialize(void) {
   return;
 }
 
-int8_t Logger::init_and_verify(void) {
-  // Since SD.begin() cannot be called outside of the setup() function, we will
-  // do the initialization here
-  initialize();
-
+int8_t Logger::verify_init(void) {
   // Verify that the datafile was created
   if (!data_file) {
     return 0;

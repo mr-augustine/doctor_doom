@@ -73,7 +73,6 @@ private:
   uint32_t  suffix;
 
 public:
-  Statevars(void);
   void initialize(void);
   int8_t verify_init(void);
   float get_control_heading_desired(void) { return control_heading_desired; }

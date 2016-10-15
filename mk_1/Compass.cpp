@@ -163,8 +163,6 @@ ISR(TWI_vect) {
 Compass::Compass(const Statevars * s) {
   vars = s;
   enabled = false;
-
-  initialize();
 }
 
 void Compass::initialize(void) {
@@ -189,6 +187,8 @@ void Compass::initialize(void) {
   TWCR = (1 << TWEN) | (1 << TWIE);
 
   enabled = true;
+
+  return;
 }
 
 int8_t Compass::verify_init(void) {

@@ -29,10 +29,8 @@ private:
   volatile ButtonState button_state;
   uint8_t pin_value;
 
-  void initialize(void);
-
 public:
-  LedButton(void);
+  void initialize(void);
   int8_t verify_init(void);
   void update(void);
   bool is_pressed(void);

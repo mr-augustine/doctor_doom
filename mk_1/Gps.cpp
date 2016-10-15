@@ -78,8 +78,6 @@ ISR (USART2_RX_vect) {
 
 Gps::Gps(const Statevars * s) {
   vars = s;
-
-  initialize();
 }
 
 void Gps::initialize(void) {

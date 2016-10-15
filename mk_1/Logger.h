@@ -22,11 +22,11 @@ private:
   File data_file;
 
   uint8_t init_datafile(void);
-  void initialize(void);
 
 public:
   Logger(const Statevars * s);
-  int8_t init_and_verify(void);
+  void initialize(void);
+  int8_t verify_init(void);
   void write(void);
   void finish(void);
 };
