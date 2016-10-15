@@ -6,6 +6,7 @@ Gps myGps(&myVars);
 LedButton myButton;
 Logger myLogger(&myVars);
 Mobility myMobility(&myVars);
+Odometer myOdometer(&myVars);
 
 void setup() {
   Serial.begin(9600);
@@ -27,6 +28,7 @@ void init_all_subsystems(void) {
   myGps.initialize();
   myButton.initialize();
   myMobility.initialize();
+  myOdometer.initialize();
 
   sei();
 
@@ -43,6 +45,7 @@ uint8_t verify_all_subsystems(void) {
   int8_t button_return = myButton.verify_init();
   int8_t logger_return = myLogger.verify_init();
   int8_t mobility_return = myMobility.verify_init();
+  int8_t odo_return = myOdometer.verify_init();
 
   if (svars_return == 1) {
     Serial.println("Statevars is ready!");
@@ -81,6 +84,14 @@ uint8_t verify_all_subsystems(void) {
   } else {
     Serial.print("Mobility couldn't be initialized: ");
     Serial.println(mobility_return);
+    return 0;
+  }
+
+  if (odo_return == 1) {
+    Serial.println("Odometer is ready!");
+  } else {
+    Serial.print("Odometer couldn't be initialized: ");
+    Serial.println(odo_return);
     return 0;
   }
 

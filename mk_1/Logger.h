@@ -8,7 +8,6 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
-#include <HardwareSerial.h>
 #include <SD.h>
 
 #include "Pins.h"
