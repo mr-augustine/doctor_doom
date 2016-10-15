@@ -5,6 +5,10 @@
  */
 #include "LedButton.h"
 
+LedButton::LedButton(void) {
+  initialize();
+}
+
 void LedButton::initialize(void) {
   // Turn on the pullup resistors
   BUTTON_PORT |= (1 << BUTTON_PIN);

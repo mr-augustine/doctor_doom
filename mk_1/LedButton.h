@@ -30,6 +30,7 @@ private:
   uint8_t pin_value;
 
 public:
+  LedButton(void);
   void initialize(void);
   int8_t verify_init(void);
   void update(void);

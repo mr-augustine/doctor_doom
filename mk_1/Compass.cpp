@@ -162,7 +162,7 @@ ISR(TWI_vect) {
 
 Compass::Compass(const Statevars * s) {
   vars = s;
-  enabled = 0;
+  enabled = false;
 
   initialize();
 }
@@ -188,7 +188,7 @@ void Compass::initialize(void) {
   // Enable the two wire interface and enable interrupts
   TWCR = (1 << TWEN) | (1 << TWIE);
 
-  enabled = 1;
+  enabled = true;
 }
 
 int8_t Compass::verify_init(void) {

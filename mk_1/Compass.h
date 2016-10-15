@@ -28,7 +28,7 @@ enum CompassRegister {
 class Compass {
 private:
   Statevars * vars;
-  uint8_t enabled;
+  bool enabled;
 
   void begin_new_reading(void);
 
