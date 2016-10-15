@@ -26,7 +26,6 @@ private:
 
 public:
   Logger(const Statevars * s);
-
   int8_t init_and_verify(void);
   void write(void);
   void finish(void);

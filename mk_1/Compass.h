@@ -31,10 +31,10 @@ private:
   bool enabled;
 
   void begin_new_reading(void);
+  void initialize(void);
 
 public:
   Compass(const Statevars * s);
-  void initialize(void);
   int8_t verify_init(void);
   void update(void);
 };
