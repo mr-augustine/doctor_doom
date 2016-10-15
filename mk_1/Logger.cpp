@@ -26,6 +26,24 @@ void Logger::initialize(void) {
   return;
 }
 
+int8_t Logger::init_and_verify(void) {
+  // Since SD.begin() cannot be called outside of the setup() function, we will
+  // do the initialization here
+  initialize();
+
+  // Verify that the datafile was created
+  if (!data_file) {
+    return 0;
+  }
+
+  // Verify that the data variable is non-null
+  if (data == NULL) {
+    return -1;
+  }
+
+  return 1;
+}
+
 uint8_t Logger::init_datafile(void) {
   char filepath[32];
 
@@ -59,4 +77,21 @@ uint8_t Logger::init_datafile(void) {
   Serial.println(" was opened for write!");
 
   return 1;
+}
+
+void Logger::write(void) {
+  if (data_file) {
+    data_file.write((uint8_t *) data, data_size);
+  }
+
+  return;
+}
+
+void Logger::finish(void) {
+  if (data_file) {
+    data_file.close();
+    Serial.println("File is closed");
+  }
+
+  return;
 }

@@ -5,6 +5,7 @@ Mobility myMobility(&myVars);
 Compass myCompass(&myVars);
 Gps myGps(&myVars);
 LedButton myButton;
+Logger myLogger(&myVars);
 
 void setup() {
   Serial.begin(9600);
@@ -23,6 +24,9 @@ void setup() {
 
   Serial.print("LedButton::verify_init(): ");
   Serial.println(myButton.verify_init());
+
+  Serial.print("Logger::verify_init(): ");
+  Serial.println(myLogger.init_and_verify());
 }
 
 void loop() {
