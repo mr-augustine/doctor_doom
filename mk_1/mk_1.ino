@@ -1,11 +1,11 @@
 #include "Robot.h"
 
 Statevars myVars;
-Mobility myMobility(&myVars);
 Compass myCompass(&myVars);
 Gps myGps(&myVars);
 LedButton myButton;
 Logger myLogger(&myVars);
+Mobility myMobility(&myVars);
 
 void setup() {
   Serial.begin(9600);
@@ -27,6 +27,10 @@ void setup() {
 
   Serial.print("Logger::verify_init(): ");
   Serial.println(myLogger.init_and_verify());
+
+  myMobility.initialize();
+  Serial.print("Mobility::verify_init(): ");
+  Serial.println(myMobility.verify_init());
 }
 
 void loop() {

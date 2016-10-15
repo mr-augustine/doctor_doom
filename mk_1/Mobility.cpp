@@ -45,7 +45,7 @@ void Mobility::initialize(void) {
   STEERING_COMPARE_REG = pwm_to_ticks(steering_us);
   THROTTLE_COMPARE_REG = pwm_to_ticks(throttle_us);
 
-  tnp_bypass();
+  return;
 }
 
 void Mobility::drive_fwd(DriveSpeed speed) {
@@ -286,6 +286,8 @@ int8_t Mobility::verify_init(void) {
        !(THROTTLE_COMPARE_REG == pwm_to_ticks(throttle_us)) ) {
     return -5;
   }
+
+  tnp_bypass();
 
   return 1;
 }
