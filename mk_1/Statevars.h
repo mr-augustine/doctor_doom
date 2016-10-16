@@ -69,7 +69,7 @@ private:
   float     control_xtrack_error;
   float     control_xtrack_error_rate;
   float     control_xtrack_error_sum;
-  float     control_steering_pwm;
+  uint16_t  control_steering_pwm;
   uint32_t  suffix;
 
 public:
@@ -77,8 +77,8 @@ public:
   int8_t verify_init(void);
   float get_control_heading_desired(void) { return control_heading_desired; }
   void set_control_heading_desired(float chd) { control_heading_desired = chd; }
-  float get_control_steering_pwm(void) { return control_steering_pwm; }
-  void set_control_steering_pwm(float csp) { control_steering_pwm = csp; }
+  uint16_t get_control_steering_pwm(void) { return control_steering_pwm; }
+  void set_control_steering_pwm(uint16_t csp) { control_steering_pwm = csp; }
   float get_control_xtrack_error(void) { return control_xtrack_error; }
   void set_control_xtrack_error(float cxe) { control_xtrack_error = cxe; }
   float get_control_xtrack_error_rate(void) { return control_xtrack_error_rate; }
