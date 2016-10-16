@@ -1,7 +1,7 @@
 #include "Robot.h"
 
 #define MAINLOOP_PERIOD_TICKS   6249
-#define MISSION_TIMEOUT         200
+#define MISSION_TIMEOUT         400
 
 Statevars myVars;
 Compass myCompass(&myVars);
@@ -132,7 +132,7 @@ void init_all_subsystems(void) {
 
   // The logger needs interrupts enabled so that it can initialize
   myLogger.initialize();
-
+  myButton.turn_off_led();
   return;
 }
 
@@ -174,7 +174,7 @@ uint8_t verify_all_subsystems(void) {
   int8_t odo_return = myOdometer.verify_init();
 
   if (svars_return == 1) {
-    Serial.println("Statevars is ready!");
+    // Serial.println("Statevars is ready!");
   } else {
     Serial.print("Statevars couldn't be initialized: ");
     Serial.println(svars_return);
@@ -182,7 +182,7 @@ uint8_t verify_all_subsystems(void) {
   }
 
   if (cmps_return == 1) {
-    Serial.println("Compass is ready!");
+    // Serial.println("Compass is ready!");
   } else {
     Serial.print("Compass couldn't be initialized: ");
     Serial.println(cmps_return);
@@ -190,7 +190,7 @@ uint8_t verify_all_subsystems(void) {
   }
 
   if (gps_return == 1) {
-    Serial.println("GPS is ready!");
+    // Serial.println("GPS is ready!");
   } else {
     Serial.print("GPS couldn't be initialized: ");
     Serial.println(gps_return);
@@ -198,15 +198,15 @@ uint8_t verify_all_subsystems(void) {
   }
 
   if (button_return == 1) {
-    Serial.println("LED button is ready!");
+    // Serial.println("LED button is ready!");
   } else {
-    Serial.print("LED button couldn't be initialized: ");
+    // Serial.print("LED button couldn't be initialized: ");
     Serial.println(button_return);
     return 0;
   }
 
   if (mobility_return == 1) {
-    Serial.println("Mobility is ready!");
+    // Serial.println("Mobility is ready!");
   } else {
     Serial.print("Mobility couldn't be initialized: ");
     Serial.println(mobility_return);
@@ -214,7 +214,7 @@ uint8_t verify_all_subsystems(void) {
   }
 
   if (odo_return == 1) {
-    Serial.println("Odometer is ready!");
+    // Serial.println("Odometer is ready!");
   } else {
     Serial.print("Odometer couldn't be initialized: ");
     Serial.println(odo_return);
@@ -222,7 +222,7 @@ uint8_t verify_all_subsystems(void) {
   }
 
   if (logger_return == 1) {
-    Serial.println("Logger is ready!");
+    // Serial.println("Logger is ready!");
     myButton.turn_off_led();
   } else {
     Serial.print("Logger couldn't be initialized: ");

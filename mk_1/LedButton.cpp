@@ -8,7 +8,9 @@
 void LedButton::initialize(void) {
   // Turn on the pullup resistors
   BUTTON_PORT |= (1 << BUTTON_PIN);
-  BUTTON_LED_PORT |= (1 << BUTTON_LED_PIN);
+
+  // TODO: Can/should the pullup resistor be turned on for an output pin?
+  // BUTTON_LED_PORT |= (1 << BUTTON_LED_PIN);
 
   // Set the button's pin as an input
   BUTTON_DDR &= ~(1 << BUTTON_PIN);
@@ -26,8 +28,9 @@ void LedButton::initialize(void) {
 
 int8_t LedButton::verify_init(void) {
   // Verify the pullup resistors were turned on
-  if ( !(BUTTON_PORT & (1 << BUTTON_PIN)) ||
-       !(BUTTON_LED_PORT & (1 << BUTTON_LED_PIN)) ) {
+  // if ( !(BUTTON_PORT & (1 << BUTTON_PIN)) ||
+  //      !(BUTTON_LED_PORT & (1 << BUTTON_LED_PIN)) ) {
+  if ( !(BUTTON_PORT & (1 << BUTTON_PIN)) ) {
     return 0;
   }
 
