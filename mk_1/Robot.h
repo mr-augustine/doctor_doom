@@ -37,7 +37,7 @@
 
 #define TARGET_HEADING              270.0
 
-#define K_PROP                      10 // proportional gain
+#define K_PROP                      2 // proportional gain
 #define K_RATE                      0 // derivative gain
 #define K_INTEGRAL                  0 // integral gain
 

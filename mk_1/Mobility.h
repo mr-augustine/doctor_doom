@@ -16,7 +16,7 @@
 #include "Pins.h"
 #include "Statevars.h"
 
-#define PWM_PERIOD_MS             20
+#define PWM_PERIOD_MS             25
 #define MILLISEC_PER_SEC          1000
 #define MICROSEC_PER_MILLISEC     1000
 #define PRESCALER_64              ((1 << CS30) | (1 << CS31))
@@ -64,7 +64,7 @@ private:
   Statevars * vars;
 
   uint16_t pwm_to_ticks(uint16_t pwm_us);
-  void tnp_bypass(void) { _delay_ms(2500); }
+  void tnp_bypass(uint16_t iterations);
 
 public:
   const uint32_t ticks_per_period = PRESCALED_TICKS_PER_SEC / (MILLISEC_PER_SEC / PWM_PERIOD_MS);
@@ -75,6 +75,7 @@ public:
   int8_t verify_init(void);
   void drive_fwd(DriveSpeed speed);
   void drive_rev(DriveSpeed speed);
+  void blocking_stop(void);
   void steer(uint16_t steer_pwm);
   void stop(void);
 };

@@ -287,7 +287,41 @@ int8_t Mobility::verify_init(void) {
     return -5;
   }
 
-  tnp_bypass();
+  tnp_bypass(TNP_MIN_ITERATIONS);
 
   return 1;
+}
+
+void Mobility::tnp_bypass(uint16_t iterations) {
+  uint16_t pulse_on_duration_us = 1500;
+  uint16_t pulse_off_duration_us = 23500;
+
+  uint8_t pulse_iterations = iterations;
+  uint8_t i;
+
+  // Ensure the drive and steering pins are initially low
+  THROTTLE_PORT &= ~(1 << THROTTLE_DDR_PIN);
+  STEERING_PORT &= ~(1 << STEERING_DDR_PIN);
+
+  for (i = 0; i < pulse_iterations; i++) {
+    // Start the neutral pwm pulses
+    THROTTLE_PORT |= (1 << THROTTLE_DDR_PIN);
+    STEERING_PORT |= (1 << STEERING_DDR_PIN);
+
+    // Hold the pulse
+    _delay_us(pulse_on_duration_us);
+
+    // end the pulse
+    THROTTLE_PORT &= ~(1 << THROTTLE_DDR_PIN);
+    STEERING_PORT &= ~(1 << STEERING_DDR_PIN);
+    _delay_us(pulse_off_duration_us);
+  }
+
+  return;
+}
+
+void Mobility::blocking_stop(void) {
+  THROTTLE_COMPARE_REG = pwm_to_ticks(THROT_NEUTRAL);
+
+  return;
 }

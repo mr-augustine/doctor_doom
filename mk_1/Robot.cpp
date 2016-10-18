@@ -66,7 +66,9 @@ void Robot::update_nav_control_values(void) {
   // the target heading, I need to turn left. To turn left, you increase the
   // steering PWM value. This is why we have a subtraction in the line below.
   vars->set_control_steering_pwm( (uint16_t)(STEER_NEUTRAL - steer_control) );
-  //vars->set_control_steering_pwm( (uint16_t)(vars->get_mobility_steering_pwm - steer_control) );
+
+  // Don't use this one. Instead, use the calculation relative to Neutral
+  // vars->set_control_steering_pwm( (uint16_t)(vars->get_mobility_steering_pwm() - steer_control) );
 
   return;
 }
