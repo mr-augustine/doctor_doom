@@ -16,7 +16,7 @@
 #include "Pins.h"
 #include "Statevars.h"
 
-#define PWM_PERIOD_MS             25
+#define PWM_PERIOD_MS             20
 #define MILLISEC_PER_SEC          1000
 #define MICROSEC_PER_MILLISEC     1000
 #define PRESCALER_64              ((1 << CS30) | (1 << CS31))

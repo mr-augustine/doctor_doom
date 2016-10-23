@@ -28,6 +28,8 @@ private:
 
 public:
   Control(const Statevars * s);
+  void initialize(void);
+  int8_t verify_init(void);
   void update(void);
 };
 

@@ -5,12 +5,25 @@
 
 Control::Control(const Statevars * s) {
   vars = s;
+}
 
+void Control::initialize(void) {
   xtrack_error = 0.0;
   xtrack_error_prev = 0.0;
   xtrack_error_rate = 0.0;
   xtrack_error_sum = 0.0;
   steer_control = STEER_NEUTRAL;
+
+  return;
+}
+
+int8_t Control::verify_init(void) {
+  // Verify that the steering control is initialized to neutral
+  if (steer_control != STEER_NEUTRAL) {
+    return 0;
+  }
+
+  return 1;
 }
 
 void Control::update(void) {

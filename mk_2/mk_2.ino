@@ -128,6 +128,8 @@ void init_all_subsystems(void) {
   myButton.initialize();
   myMobility.initialize();
   myOdometer.initialize();
+  myNavigation.initialize();
+  myControl.initialize();
 
   sei();
 
@@ -172,7 +174,9 @@ uint8_t verify_all_subsystems(void) {
   int8_t button_return = myButton.verify_init();
   int8_t logger_return = myLogger.verify_init();
   int8_t mobility_return = myMobility.verify_init();
+  int8_t navigation_return = myNavigation.verify_init();
   int8_t odo_return = myOdometer.verify_init();
+  int8_t ctrl_return = myControl.verify_init();
 
   if (svars_return == 1) {
     Serial.println("Statevars is ready!");
@@ -219,6 +223,22 @@ uint8_t verify_all_subsystems(void) {
   } else {
     Serial.print("Odometer couldn't be initialized: ");
     Serial.println(odo_return);
+    return 0;
+  }
+
+  if (navigation_return == 1) {
+    Serial.println("Navigation is ready!");
+  } else {
+    Serial.print("Navigation couldn't be initialized: ");
+    Serial.println(navigation_return);
+    return 0;
+  }
+
+  if (ctrl_return == 1) {
+    Serial.println("Control is ready!");
+  } else {
+    Serial.print("Control couldn't be initialized: ");
+    Serial.println(ctrl_return);
     return 0;
   }
 
